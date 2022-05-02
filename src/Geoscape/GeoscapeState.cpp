@@ -91,6 +91,7 @@
 #include "CraftErrorState.h"
 #include "DogfightErrorState.h"
 #include "DogfightExperienceState.h"
+#include "../Battlescape/PromotionsState.h"
 #include "../Ufopaedia/Ufopaedia.h"
 #include "../Savegame/ResearchProject.h"
 #include "ResearchCompleteState.h"
@@ -1225,13 +1226,18 @@ void GeoscapeState::time5Seconds()
 				}
 			}
 
+			std::string pushState = "NONE";
 			if (!ufoIsAttacking)
 			{
-				bool returnedToBase = (*j)->think();
+				bool returnedToBase = (*j)->think(pushState);
 				if (returnedToBase)
 				{
 					_game->getSavedGame()->stopHuntingXcomCraft((*j)); // hiding in the base is good enough, obviously
 				}
+			}
+			if (pushState == "PromotionsState")
+			{
+				_game->pushState(new PromotionsState);
 			}
 
 			// Handle craft shield recharge
@@ -1988,6 +1994,7 @@ void GeoscapeState::time30Minutes()
 			{
 				if (region->getRules()->insideRegion(ufo->getLongitude(), ufo->getLatitude()))
 				{
+					// #FINNIKTODO loyalty change here?
 					region->addActivityAlien(points);
 					break;
 				}
@@ -2026,7 +2033,14 @@ void GeoscapeState::time30Minutes()
 				{
 					int tracking = craft->getPilotTrackingBonus(craft->getPilotList(false), _game->getMod());
 					detected = maskBitOr(detected, craft->detect(ufo, save, tracking, alreadyTracked));
-					//#FINNIKTODO - add tracking expirience here!
+					if (!alreadyTracked && detected == DETECTION_RADAR && tracking < 100)
+					{
+						int exp = RNG::generate(1, static_cast<int>(ceil((100 - tracking) / 20)));
+						for (auto s : craft->getPilotList(false))
+						{
+							s->getDogfightExperience()->tracking += exp;
+						}
+					}
 				}
 
 				if (!alreadyTracked)
