@@ -691,6 +691,7 @@ void SoldiersState::cbxScreenActionsChange(Action *action)
 	}
 	else
 	{
+		_cbxSortBy->setSelected(0);
 		initList(0);
 	}
 }
