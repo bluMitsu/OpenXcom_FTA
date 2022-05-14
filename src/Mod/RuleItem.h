@@ -411,6 +411,7 @@ private:
 	RuleStatBonus _damageBonus, _meleeBonus, _accuracyMulti, _meleeMulti, _throwMulti, _closeQuartersMulti;
 	ModScript::BattleItemScripts::Container _battleItemScripts;
 	ScriptValues<RuleItem> _scriptValues;
+	int _extendedItemReloadCostLocal;
 
 	/// Get final value of cost.
 	RuleItemUseCost getDefault(const RuleItemUseCost& a, const RuleItemUseCost& b) const;
@@ -430,6 +431,8 @@ private:
 	int getRandomSound(const std::vector<int> &vector, int defaultValue = -1) const;
 	/// Load RuleItemFuseTrigger from yaml.
 	void loadConfFuse(RuleItemFuseTrigger& a, const YAML::Node& node, const std::string& name) const;
+	/// Load ExtendedItemReloadCostLocal from yaml.
+	void loadExtendedItemReloadCostLocal(const YAML::Node& node);
 
 public:
 	/// Name of class used in script.
@@ -448,6 +451,8 @@ public:
 	/// Cross link with other rules.
 	void afterLoad(const Mod* mod);
 
+    /// Gets reload cost
+	int getExtendedItemReloadCostLocal() const {return _extendedItemReloadCostLocal;}
 	/// Gets the item's type.
 	const std::string &getType() const;
 	/// Gets the item's name.
