@@ -65,7 +65,6 @@ private:
 	BattleItem *_currentDamageTooltipItem = nullptr;
 	bool _reloadUnit, _ftaUI;
 	int _globalLayoutIndex;
-	Soldier *_geoscapeSoldier;
 	/// Helper method for Create Template button
 	void _createInventoryTemplate(std::vector<EquipmentLayoutItem*> &inventoryTemplate);
 	/// Helper method for Apply Template button
