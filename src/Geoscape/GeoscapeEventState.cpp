@@ -86,7 +86,7 @@ GeoscapeEventState::GeoscapeEventState(const RuleEvent& eventRule) : _eventRule(
 
 	// Set up objects
 	_window->setBackground(_game->getMod()->getSurface(_eventRule.getBackground()));
-
+	_window->setInnerColor(_eventRule.getBackgroundColour());
 	_txtTitle->setAlign(ALIGN_CENTER);
 	_txtTitle->setBig();
 	_txtTitle->setWordWrap(true);
@@ -618,7 +618,6 @@ GeoscapeEventAnswerInfoState::GeoscapeEventAnswerInfoState(RuleEvent rule, std::
 
 	// Set up objects
 	_window->setBackground(_game->getMod()->getSurface(rule.getBackground()));
-
 	_txtDescription->setVerticalAlign(ALIGN_MIDDLE);
 	_txtDescription->setWordWrap(true);
 	_txtDescription->setText(tr(descr));

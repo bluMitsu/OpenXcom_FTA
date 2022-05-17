@@ -67,7 +67,8 @@ private:
 	std::string _interruptResearch;
 	int _timer, _timerRandom;
 	std::map<int, CustomAnswer> _answers;
-public:
+	int _backgroundColor;
+  public:
 	/// Creates a blank RuleEvent.
 	RuleEvent(const std::string &name);
 	/// Cleans up the event ruleset.
@@ -92,6 +93,7 @@ public:
 	int getFunds() const { return _funds; }
 	/// Gets the value of loyalty that would be added to the player's loyalty score when this event pops up.
 	int getLoyalty() const { return _loyalty; }
+	int getBackgroundColour() const { return _backgroundColor; }
 
 	/// Gets the number of spawned persons.
 	int getSpawnedPersons() const { return _spawnedPersons; }
