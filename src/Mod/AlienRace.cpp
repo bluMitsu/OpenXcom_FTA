@@ -55,6 +55,7 @@ void AlienRace::load(const YAML::Node &node)
 	_members = node["members"].as< std::vector<std::string> >(_members);
 	_membersRandom = node["membersRandom"].as< std::vector <std::vector<std::string> > >(_membersRandom);
 	_retaliationAggression = node["retaliationAggression"].as<int>(_retaliationAggression);
+	_raceType = (RaceType)node["race"].as<int>(_raceType);
 
 	if (const YAML::Node& weights = node["retaliationMissionWeights"])
 	{
