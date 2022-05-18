@@ -68,7 +68,7 @@ private:
 	int _timer, _timerRandom;
 	std::map<int, CustomAnswer> _answers;
 	int _backgroundColor;
-  public:
+public:
 	/// Creates a blank RuleEvent.
 	RuleEvent(const std::string &name);
 	/// Cleans up the event ruleset.
