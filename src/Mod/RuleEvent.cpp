@@ -23,7 +23,7 @@ namespace OpenXcom
 {
 
 RuleEvent::RuleEvent(const std::string &name) : _name(name), _background("BACK13.SCR"), _city(false), _points(0), _funds(0), _loyalty(0),
-												_spawnedPersons(0), _timer(30), _timerRandom(0), _backgroundColor(239)
+												_spawnedPersons(0), _timer(30), _timerRandom(0), _backgroundColor(0)
 {
 }
 
