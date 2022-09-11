@@ -66,11 +66,11 @@ public:
 	/// Updates the soldier info.
 	void init() override;
 	/// Handler for clicking the Soldiers reordering button.
-	void lstItemsLeftArrowClick(Action *action);
+//	void lstItemsLeftArrowClick(Action *action);
 	/// Moves a soldier up.
 	void moveSoldierUp(Action *action, unsigned int row, bool max = false);
 	/// Handler for clicking the Soldiers reordering button.
-	void lstItemsRightArrowClick(Action *action);
+//	void lstItemsRightArrowClick(Action *action);
 	/// Moves a soldier down.
 	void moveSoldierDown(Action *action, unsigned int row, bool max = false);
 	/// Handler for clicking the OK button.
