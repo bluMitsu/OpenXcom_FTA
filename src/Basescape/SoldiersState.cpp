@@ -128,7 +128,7 @@ SoldiersState::SoldiersState(Base *base) : _base(base), _origSoldierOrder(*_base
 	_btnTraining->setText(tr("STR_TRAINING"));
 	_btnTraining->onMouseClick((ActionHandler)&SoldiersState::btnTrainingClick);
 	_btnTraining->setVisible(isTrnBtnVisible);
-
+//
 	_btnMemorial->setText(tr("STR_MEMORIAL"));
 	_btnMemorial->onMouseClick((ActionHandler)&SoldiersState::btnMemorialClick);
 

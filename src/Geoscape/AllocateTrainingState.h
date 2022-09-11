@@ -44,7 +44,7 @@ private:
 	ToggleTextButton *_btnPlus;
 	Window *_window;
 	Text *_txtTitle, *_txtTraining, *_txtName, *_txtRemaining;
-	Text *_txtTu, *_txtStamina, *_txtHealth, *_txtFiring, *_txtThrowing, *_txtMelee, *_txtStrength;
+	Text *_txtTu, *_txtStamina, *_txtHealth, *_txtFiring, *_txtThrowing, *_txtMelee, *_txtStrength, *_txtReactions;
 	ComboBox *_cbxSortBy;
 	TextList *_lstSoldiers;
 	std::vector<Soldier*> _soldiers;

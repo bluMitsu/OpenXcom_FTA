@@ -1,0 +1,12 @@
+/home/mitsu/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.3739.54/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/mitsu/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.3739.54/bin/ninja/linux/ninja -G Ninja -S /home/mitsu/Desktop/openxcom -B /home/mitsu/Desktop/openxcom/cmake-build-debug
+-- OpenGL libraries: /usr/lib/x86_64-linux-gnu/libGL.so;/usr/lib/x86_64-linux-gnu/libGLU.so
+-- PKG_DEPS_LDFLAGS: -L/usr/lib/x86_64-linux-gnu;-lSDL;-L/usr/lib/x86_64-linux-gnu;-lz;-L/usr/lib/x86_64-linux-gnu;-lSDL_image;-lSDL;-L/usr/local/lib;-L/usr/lib/x86_64-linux-gnu;-lSDL_gfx;-lSDL;-L/usr/lib/x86_64-linux-gnu;-lSDL_mixer;-lSDL;-L/usr/lib/x86_64-linux-gnu;-lyaml-cpp;/usr/lib/x86_64-linux-gnu/libGL.so;/usr/lib/x86_64-linux-gnu/libGLU.so;dl 
+CMake Warning at CMakeLists.txt:194 (message):
+  Missing OPENXCOM_TARGET for package naming.  Please set it.
+
+
+-- OpenXcom version: 7.5.6-6b3220c08-2022-07-14-dirty
+-- doxygen: /usr/bin/doxygen
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mitsu/Desktop/openxcom/cmake-build-debug

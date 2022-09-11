@@ -58,14 +58,15 @@ AllocateTrainingState::AllocateTrainingState(Base *base) : _sel(0), _base(base),
 	_txtName = new Text(64, 10, 10, 40);
 	_txtTraining = new Text(48, 20, 270, 32);
 	_btnOk = new TextButton(148, 16, 164, 176);
-	_lstSoldiers = new TextList(290, 112, 8, 52);
+	_lstSoldiers = new TextList(300, 112, 8, 52);
 	_txtTu = new Text(18, 10, 120, 40);
 	_txtStamina = new Text(18, 10, 138, 40);
 	_txtHealth = new Text(18, 10, 156, 40);
-	_txtFiring = new Text(18, 10, 174, 40);
-	_txtThrowing = new Text(18, 10, 192, 40);
-	_txtMelee = new Text(18, 10, 210, 40);
-	_txtStrength = new Text(18, 10, 228, 40);
+	_txtReactions = new Text(18, 10, 174, 40);
+	_txtFiring = new Text(18, 10, 192, 40);
+	_txtThrowing = new Text(18, 10, 210, 40);
+	_txtMelee = new Text(18, 10, 228, 40);
+	_txtStrength = new Text(18, 10, 246, 40);
 	_cbxSortBy = new ComboBox(this, 148, 16, 8, 176, true);
 	_btnPlus = new ToggleTextButton(18, 16, 294, 8);
 
@@ -82,6 +83,7 @@ AllocateTrainingState::AllocateTrainingState(Base *base) : _sel(0), _base(base),
 	add(_txtTu, "text", "allocateMartial");
 	add(_txtStamina, "text", "allocateMartial");
 	add(_txtHealth, "text", "allocateMartial");
+	add(_txtReactions, "text", "allocateMartial");
 	add(_txtFiring, "text", "allocateMartial");
 	add(_txtThrowing, "text", "allocateMartial");
 	add(_txtMelee, "text", "allocateMartial");
@@ -123,6 +125,7 @@ AllocateTrainingState::AllocateTrainingState(Base *base) : _sel(0), _base(base),
 	_txtTu->setText(tr("STR_TIME_UNITS_ABBREVIATION"));
 	_txtStamina->setText(tr("STR_STAMINA_ABBREVIATION"));
 	_txtHealth->setText(tr("STR_HEALTH_ABBREVIATION"));
+	_txtReactions->setText(tr("STR_REACTIONS_ABBREVIATION"));
 	_txtFiring->setText(tr("STR_FIRING_ACCURACY_ABBREVIATION"));
 	_txtThrowing->setText(tr("STR_THROWING_ACCURACY_ABBREVIATION"));
 	_txtMelee->setText(tr("STR_MELEE_ACCURACY_ABBREVIATION"));
@@ -163,8 +166,8 @@ AllocateTrainingState::AllocateTrainingState(Base *base) : _sel(0), _base(base),
 	PUSH_IN("STR_TIME_UNITS", tuStatBase, tuStatPlus);
 	PUSH_IN("STR_STAMINA", staminaStatBase, staminaStatPlus);
 	PUSH_IN("STR_HEALTH", healthStatBase, healthStatPlus);
-	PUSH_IN("STR_BRAVERY", braveryStatBase, braveryStatPlus);
 	PUSH_IN("STR_REACTIONS", reactionsStatBase, reactionsStatPlus);
+	PUSH_IN("STR_BRAVERY", braveryStatBase, braveryStatPlus);
 	PUSH_IN("STR_FIRING_ACCURACY", firingStatBase, firingStatPlus);
 	PUSH_IN("STR_THROWING_ACCURACY", throwingStatBase, throwingStatPlus);
 	PUSH_IN("STR_MELEE_ACCURACY", meleeStatBase, meleeStatPlus);
@@ -184,13 +187,11 @@ AllocateTrainingState::AllocateTrainingState(Base *base) : _sel(0), _base(base),
 	_cbxSortBy->onChange((ActionHandler)&AllocateTrainingState::cbxSortByChange);
 	_cbxSortBy->setText(tr("STR_SORT_BY"));
 
-	_lstSoldiers->setArrowColumn(238, ARROW_VERTICAL);
-	_lstSoldiers->setColumns(9, 110, 18, 18, 18, 18, 18, 18, 42, 40);
+
+	_lstSoldiers->setColumns(9, 110, 18, 18, 18, 18, 18, 18, 18, 24);
 	_lstSoldiers->setSelectable(true);
 	_lstSoldiers->setBackground(_window);
 	_lstSoldiers->setMargin(2);
-	_lstSoldiers->onLeftArrowClick((ActionHandler)&AllocateTrainingState::lstItemsLeftArrowClick);
-	_lstSoldiers->onRightArrowClick((ActionHandler)&AllocateTrainingState::lstItemsRightArrowClick);
 	_lstSoldiers->onMouseClick((ActionHandler)&AllocateTrainingState::lstSoldiersClick);
 	_lstSoldiers->onMousePress((ActionHandler)&AllocateTrainingState::lstSoldiersMousePress);
 }
@@ -317,6 +318,8 @@ void AllocateTrainingState::initList(size_t scrl)
 		stamina << stats->stamina;
 		std::ostringstream health;
 		health << stats->health;
+		std::ostringstream reactions;
+		reactions << stats->reactions;
 		std::ostringstream firing;
 		firing << stats->firing;
 		std::ostringstream throwing;
@@ -349,11 +352,12 @@ void AllocateTrainingState::initList(size_t scrl)
 		else
 			status = tr("STR_NO");
 
-		_lstSoldiers->addRow(9,
-			(*s)->getName(true).c_str(),
+		_lstSoldiers->addRow(10,
+			(*s)->getName(true).c_str(), 
 			tu.str().c_str(),
 			stamina.str().c_str(),
 			health.str().c_str(),
+			reactions.str().c_str(),
 			firing.str().c_str(),
 			throwing.str().c_str(),
 			melee.str().c_str(),
@@ -365,111 +369,6 @@ void AllocateTrainingState::initList(size_t scrl)
 	if (scrl)
 		_lstSoldiers->scrollTo(scrl);
 	_lstSoldiers->draw();
-}
-
-/**
- * Reorders a soldier up.
- * @param action Pointer to an action.
- */
-void AllocateTrainingState::lstItemsLeftArrowClick(Action *action)
-{
-	unsigned int row = _lstSoldiers->getSelectedRow();
-	if (row > 0)
-	{
-		if (action->getDetails()->button.button == SDL_BUTTON_LEFT)
-		{
-			moveSoldierUp(action, row);
-		}
-		else if (action->getDetails()->button.button == SDL_BUTTON_RIGHT)
-		{
-			moveSoldierUp(action, row, true);
-		}
-	}
-	_cbxSortBy->setText(tr("STR_SORT_BY"));
-	_cbxSortBy->setSelected(-1);
-}
-
-/**
- * Moves a soldier up on the list.
- * @param action Pointer to an action.
- * @param row Selected soldier row.
- * @param max Move the soldier to the top?
- */
-void AllocateTrainingState::moveSoldierUp(Action *action, unsigned int row, bool max)
-{
-	Soldier *s = _base->getSoldiers()->at(row);
-	if (max)
-	{
-		_base->getSoldiers()->erase(_base->getSoldiers()->begin() + row);
-		_base->getSoldiers()->insert(_base->getSoldiers()->begin(), s);
-	}
-	else
-	{
-		_base->getSoldiers()->at(row) = _base->getSoldiers()->at(row - 1);
-		_base->getSoldiers()->at(row - 1) = s;
-		if (row != _lstSoldiers->getScroll())
-		{
-			SDL_WarpMouse(action->getLeftBlackBand() + action->getXMouse(), action->getTopBlackBand() + action->getYMouse() - static_cast<Uint16>(8 * action->getYScale()));
-		}
-		else
-		{
-			_lstSoldiers->scrollUp(false);
-		}
-	}
-	initList(_lstSoldiers->getScroll());
-}
-
-/**
- * Reorders a soldier down.
- * @param action Pointer to an action.
- */
-void AllocateTrainingState::lstItemsRightArrowClick(Action *action)
-{
-	unsigned int row = _lstSoldiers->getSelectedRow();
-	size_t numSoldiers = _base->getSoldiers()->size();
-	if (0 < numSoldiers && INT_MAX >= numSoldiers && row < numSoldiers - 1)
-	{
-		if (action->getDetails()->button.button == SDL_BUTTON_LEFT)
-		{
-			moveSoldierDown(action, row);
-		}
-		else if (action->getDetails()->button.button == SDL_BUTTON_RIGHT)
-		{
-			moveSoldierDown(action, row, true);
-		}
-	}
-	_cbxSortBy->setText(tr("STR_SORT_BY"));
-	_cbxSortBy->setSelected(-1);
-}
-
-/**
- * Moves a soldier down on the list.
- * @param action Pointer to an action.
- * @param row Selected soldier row.
- * @param max Move the soldier to the bottom?
- */
-void AllocateTrainingState::moveSoldierDown(Action *action, unsigned int row, bool max)
-{
-	Soldier *s = _base->getSoldiers()->at(row);
-	if (max)
-	{
-		_base->getSoldiers()->erase(_base->getSoldiers()->begin() + row);
-		_base->getSoldiers()->insert(_base->getSoldiers()->end(), s);
-	}
-	else
-	{
-		_base->getSoldiers()->at(row) = _base->getSoldiers()->at(row + 1);
-		_base->getSoldiers()->at(row + 1) = s;
-		if (row != _lstSoldiers->getVisibleRows() - 1 + _lstSoldiers->getScroll())
-		{
-			SDL_WarpMouse(action->getLeftBlackBand() + action->getXMouse(), action->getTopBlackBand() + action->getYMouse() + static_cast<Uint16>(8 * action->getYScale()));
-		}
-		else
-		{
-			_lstSoldiers->scrollDown(false);
-		}
-	}
-	initList(_lstSoldiers->getScroll());
 }
 
 /**
@@ -503,12 +402,12 @@ void AllocateTrainingState::lstSoldiersClick(Action *action)
 		{
 			if (soldier->getReturnToTrainingWhenHealed())
 			{
-				_lstSoldiers->setCellText(_sel, 8, tr("STR_NO_WOUNDED").c_str());
+				_lstSoldiers->setCellText(_sel, 9, tr("STR_NO_WOUNDED").c_str());
 				soldier->setReturnToTrainingWhenHealed(false);
 			}
 			else
 			{
-				_lstSoldiers->setCellText(_sel, 8, tr("STR_NO_QUEUED").c_str());
+				_lstSoldiers->setCellText(_sel, 9, tr("STR_NO_QUEUED").c_str());
 				soldier->setReturnToTrainingWhenHealed(true);
 			}
 			return;
@@ -519,7 +418,7 @@ void AllocateTrainingState::lstSoldiersClick(Action *action)
 		{
 			if (_base->getUsedTraining() < _base->getAvailableTraining())
 			{
-				_lstSoldiers->setCellText(_sel, 8, tr("STR_YES").c_str());
+				_lstSoldiers->setCellText(_sel, 9, tr("STR_YES").c_str());
 				_lstSoldiers->setRowColor(_sel, _lstSoldiers->getSecondaryColor());
 				_space--;
 				_txtRemaining->setText(tr("STR_REMAINING_TRAINING_FACILITY_CAPACITY").arg(_space));
@@ -528,7 +427,7 @@ void AllocateTrainingState::lstSoldiersClick(Action *action)
 		}
 		else
 		{
-			_lstSoldiers->setCellText(_sel, 8, tr("STR_NO").c_str());
+			_lstSoldiers->setCellText(_sel, 9, tr("STR_NO").c_str());
 			_lstSoldiers->setRowColor(_sel, _lstSoldiers->getColor());
 			_space++;
 			_txtRemaining->setText(tr("STR_REMAINING_TRAINING_FACILITY_CAPACITY").arg(_space));
@@ -587,7 +486,7 @@ void AllocateTrainingState::btnDeassignAllSoldiersClick(Action* action)
 		else
 			status = tr("STR_NO");
 
-		_lstSoldiers->setCellText(row, 8, tr(status).c_str());
+		_lstSoldiers->setCellText(row, 9, tr(status).c_str());
 		_lstSoldiers->setRowColor(row, _lstSoldiers->getColor());
 		row++;
 	}
@@ -613,14 +512,14 @@ void AllocateTrainingState::btnAssignAllSoldiersClick(Action* action)
 			// wounded soldiers can be queued
 			if (!soldier->getReturnToTrainingWhenHealed())
 			{
-				_lstSoldiers->setCellText(row, 8, tr("STR_NO_QUEUED").c_str());
+				_lstSoldiers->setCellText(row, 9, tr("STR_NO_QUEUED").c_str());
 				soldier->setReturnToTrainingWhenHealed(true);
 			}
 		}
 		else if (_space > 0 && !soldier->isInTraining())
 		{
 			// healthy soldiers can be assigned
-			_lstSoldiers->setCellText(row, 8, tr("STR_YES").c_str());
+			_lstSoldiers->setCellText(row, 9, tr("STR_YES").c_str());
 			_lstSoldiers->setRowColor(row, _lstSoldiers->getSecondaryColor());
 			_space--;
 			soldier->setTraining(true);
