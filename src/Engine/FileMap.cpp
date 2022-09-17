@@ -41,6 +41,7 @@
 #include <istream>
 #include <unordered_map>
 #include <unordered_set>
+#include <zip.h>
 
 #include "FileMap.h"
 #include "Unicode.h"

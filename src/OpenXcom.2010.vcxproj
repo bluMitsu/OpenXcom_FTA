@@ -627,6 +627,7 @@
     <ClCompile Include="Ufopaedia\UfopaediaStartState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="" />
     <ClInclude Include="..\libs\miniz\miniz.h" />
     <ClInclude Include="Basescape\BaseInfoState.h" />
     <ClInclude Include="Basescape\BasescapeState.h" />
