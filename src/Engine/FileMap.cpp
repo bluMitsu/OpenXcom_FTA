@@ -41,7 +41,6 @@
 #include <istream>
 #include <unordered_map>
 #include <unordered_set>
-#include <zip.h>
 
 #include "FileMap.h"
 #include "Unicode.h"
@@ -1062,7 +1061,8 @@ void scanModDir(const std::string& dirname, const std::string& basename, bool pr
 		"XcomUtil_Statstrings",
 		"XcomUtil_Statstrings_TFTD",
 		"XcomUtil_Triton_Weapon_Slot",
-		"XCOM_Damage"
+		"XCOM_Damage",
+		"Xcom_"
 	};
 
 	std::string log_ctx = "scanModDir('" + dirname + "', '" + basename + "'): ";

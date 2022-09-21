@@ -747,50 +747,55 @@ void refreshMods()
 	// master active
 	std::string activeMaster;
 	std::string inactiveMaster;
-	for (auto i = _modInfos.cbegin(); i != _modInfos.cend(); ++i)
-	{
-		bool found = false;
-		for (std::vector< std::pair<std::string, bool> >::iterator j = mods.begin(); j != mods.end(); ++j)
+
+	if(_modInfos.find("From the Ashes") != _modInfos.end())
+		activeMaster = "From the Ashes";
+	else
+		for (auto i = _modInfos.cbegin(); i != _modInfos.cend(); ++i)
 		{
-			if (i->first == j->first)
+			bool found = false;
+			for (std::vector< std::pair<std::string, bool> >::iterator j = mods.begin(); j != mods.end(); ++j)
 			{
-				found = true;
-				if (i->second.isMaster())
+
+				if (i->first == j->first)
 				{
-					if (!_masterMod.empty())
+					found = true;
+					if (i->second.isMaster())
 					{
-						j->second = (_masterMod == j->first);
-					}
-					if (j->second)
-					{
-						if (!activeMaster.empty())
+						if (!_masterMod.empty())
 						{
-							Log(LOG_WARNING) << "Too many active masters detected; turning off " << j->first;
-							j->second = false;
+							j->second = (_masterMod == j->first);
+						}
+						if (j->second)
+						{
+							if (!activeMaster.empty())
+							{
+								Log(LOG_WARNING) << "Too many active masters detected; turning off " << j->first;
+								j->second = false;
+							}
+							else
+							{
+								activeMaster = j->first;
+							}
 						}
 						else
 						{
-							activeMaster = j->first;
+							// prefer activating standard masters over a possibly broken
+							// third party master
+							if (inactiveMaster.empty() || j->first == "xcom1" || j->first == "xcom2")
+							{
+								inactiveMaster = j->first;
+							}
 						}
 					}
-					else
-					{
-						// prefer activating standard masters over a possibly broken
-						// third party master
-						if (inactiveMaster.empty() || j->first == "xcom1" || j->first == "xcom2")
-						{
-							inactiveMaster = j->first;
-						}
-					}
-				}
 
-				break;
+					break;
+				}
 			}
-		}
-		if (found)
-		{
-			continue;
-		}
+			if (found)
+			{
+				continue;
+			}
 
 		// not active by default
 		std::pair<std::string, bool> newMod(i->first, false);

@@ -779,3 +779,15 @@
 198869	202035	1663445415748465866	src/CMakeFiles/openxcom.dir/Ufopaedia/UfopaediaSelectState.cpp.o	918599507a52b959
 197470	203966	1663445417672465920	src/CMakeFiles/openxcom.dir/Ufopaedia/StatsForNerdsState.cpp.o	bdc2875cbe0158f
 203966	209193	1663445422672466061	bin/openxcom	dc4f86f2e5465f70
+6	1921	1663775068380142862	src/CMakeFiles/openxcom.dir/Engine/FileMap.cpp.o	73adf4f699915fc5
+1921	7210	1663775073524143007	bin/openxcom	dc4f86f2e5465f70
+6	1508	1663776748620190293	src/CMakeFiles/openxcom.dir/Engine/Options.cpp.o	3c2f234ef8633be2
+1508	5690	1663776752756190410	bin/openxcom	dc4f86f2e5465f70
+14	3016	1663776768060190842	src/CMakeFiles/openxcom.dir/Engine/Options.cpp.o	3c2f234ef8633be2
+3016	8217	1663776773232190988	bin/openxcom	dc4f86f2e5465f70
+6	2950	1663777024296198075	src/CMakeFiles/openxcom.dir/Engine/Options.cpp.o	3c2f234ef8633be2
+2950	8336	1663777029636198226	bin/openxcom	dc4f86f2e5465f70
+5	2496	1663777624668215023	src/CMakeFiles/openxcom.dir/Engine/Options.cpp.o	3c2f234ef8633be2
+2496	8091	1663777630216215179	bin/openxcom	dc4f86f2e5465f70
+5	2719	1663777722456217783	src/CMakeFiles/openxcom.dir/Engine/Options.cpp.o	3c2f234ef8633be2
+2719	8322	1663777728024217940	bin/openxcom	dc4f86f2e5465f70
