@@ -748,57 +748,56 @@ void refreshMods()
 	std::string activeMaster;
 	std::string inactiveMaster;
 
-	if(_modInfos.find("From the Ashes") != _modInfos.end())
-		activeMaster = "From the Ashes";
-	else
-		for (auto i = _modInfos.cbegin(); i != _modInfos.cend(); ++i)
-		{
-			bool found = false;
-			for (std::vector< std::pair<std::string, bool> >::iterator j = mods.begin(); j != mods.end(); ++j)
-			{
 
-				if (i->first == j->first)
+
+	for (auto i = _modInfos.cbegin(); i != _modInfos.cend(); ++i)
+	{
+		bool found = false;
+		for (std::vector<std::pair<std::string, bool> >::iterator j = mods.begin(); j != mods.end(); ++j)
+		{
+
+			if (i->first == j->first)
+			{
+				found = true;
+				if (i->second.isMaster())
 				{
-					found = true;
-					if (i->second.isMaster())
+					if (!_masterMod.empty())
 					{
-						if (!_masterMod.empty())
+						j->second = (_masterMod == j->first);
+					}
+					if (j->second)
+					{
+						if (!activeMaster.empty())
 						{
-							j->second = (_masterMod == j->first);
-						}
-						if (j->second)
-						{
-							if (!activeMaster.empty())
-							{
-								Log(LOG_WARNING) << "Too many active masters detected; turning off " << j->first;
-								j->second = false;
-							}
-							else
-							{
-								activeMaster = j->first;
-							}
+							Log(LOG_WARNING) << "Too many active masters detected; turning off " << j->first;
+							j->second = false;
 						}
 						else
 						{
-							// prefer activating standard masters over a possibly broken
-							// third party master
-							if (inactiveMaster.empty() || j->first == "xcom1" || j->first == "xcom2")
-							{
-								inactiveMaster = j->first;
-							}
+							activeMaster = j->first;
 						}
 					}
-
-					break;
+					else
+					{
+						// prefer activating standard masters over a possibly broken
+						// third party master
+						if (inactiveMaster.empty() || j->first == "xcom1" || j->first == "xcom2")
+						{
+							inactiveMaster = j->first;
+						}
+					}
 				}
+
+				break;
 			}
-			if (found)
-			{
-				continue;
-			}
+		}
+		if (found)
+		{
+			continue;
+		}
 
 		// not active by default
-		std::pair<std::string, bool> newMod(i->first, false);
+		std::pair<std::string, bool> newMod(i->first, i->first == "From the Ashes");
 		if (i->second.isMaster())
 		{
 			// it doesn't matter what order the masters are in since
@@ -832,6 +831,8 @@ void refreshMods()
 	}
 	else
 	{
+		if(_modInfos.find("From the Ashes") != _modInfos.end())
+			activeMaster = "From the Ashes";
 		_masterMod = activeMaster;
 	}
 	save();
